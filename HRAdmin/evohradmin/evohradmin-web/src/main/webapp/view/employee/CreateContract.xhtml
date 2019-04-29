@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ContractCreateDlg" widgetVar="ContractCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateContractTitle}">
+            
+            
+            <h:form id="ContractCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{employeeController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateContractLabel_creationDate}" for="creationDate" />
+                        <p:calendar id="creationDate" pattern="yyyy/MM/dd" value="#{employeeController.selectedContract.creationDate}" title="#{bundle.EditContractTitle_creationDate}" required="true" requiredMessage="#{bundle.EditContractRequiredMessage_creationDate}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateContractLabel_expiryDate}" for="expiryDate" />
+                        <p:calendar id="expiryDate" pattern="yyyy/MM/dd" value="#{employeeController.selectedContract.expireDate}" title="#{bundle.EditContractTitle_expiryDate}" required="true" requiredMessage="#{bundle.EditContractRequiredMessage_expiryDate}" showOn="button"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{employeeController.createContract}" value="#{bundle.Save}" update="display,:EmployeeListForm:AddressTab:contractList,:growl" oncomplete="handleSubmit(args,'ContractCreateDialog');"  />
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ContractCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

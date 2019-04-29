@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<company>
+    <staff id="1">
+        <username>HR1</username>
+        <password>$2a$07$a.uo39qZXax7CYarMhGF1Ok01yCpzfUuynK/eteqodcKCAqe7JP4y</password>
+        <role>1</role>
+    </staff>
+    <staff id="2">
+        <username>HR2</username>
+        <password>$2a$07$Og7IGWZfTSvDxZAsasyNTezFJ/KWsWEjwA5EiHRYwCQFhC2UGKsry</password>
+        <role>2</role>
+    </staff>
+</company> 
+

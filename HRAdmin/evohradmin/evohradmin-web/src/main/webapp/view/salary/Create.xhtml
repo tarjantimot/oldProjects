@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SalaryCreateDlg" widgetVar="SalaryCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateSalaryTitle}">
+            <h:form id="SalaryCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{salaryController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateSalaryLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{salaryController.selected.id}" title="#{bundle.CreateSalaryTitle_id}" required="true" requiredMessage="#{bundle.CreateSalaryRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreateSalaryLabel_startDate}" for="startDate" />
+                        <p:calendar id="startDate" pattern="MM/dd/yyyy" value="#{salaryController.selected.startDate}" title="#{bundle.EditSalaryTitle_startDate}" required="true" requiredMessage="#{bundle.EditSalaryRequiredMessage_startDate}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateSalaryLabel_endDate}" for="endDate" />
+                        <p:calendar id="endDate" pattern="MM/dd/yyyy" value="#{salaryController.selected.endDate}" title="#{bundle.EditSalaryTitle_endDate}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.CreateSalaryLabel_amount}" for="amount" />
+                        <p:inputText id="amount" value="#{salaryController.selected.amount}" title="#{bundle.CreateSalaryTitle_amount}" required="true" requiredMessage="#{bundle.CreateSalaryRequiredMessage_amount}"/>
+                        <p:outputLabel value="#{bundle.CreateSalaryLabel_employee}" for="employee" />
+                        <p:selectOneMenu id="employee" value="#{salaryController.selected.employee}" required="true" requiredMessage="#{bundle.EditSalaryRequiredMessage_employee}">
+                            <f:selectItems value="#{employeeController.itemsAvailableSelectOne}"
+                                           var="employeeItem"
+                                           itemValue="#{employeeItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{salaryController.create}" value="#{bundle.Save}" update="display,:SalaryListForm:datalist,:growl" oncomplete="handleSubmit(args,'SalaryCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SalaryCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

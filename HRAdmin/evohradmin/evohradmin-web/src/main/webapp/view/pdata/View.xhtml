@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PdataViewDlg" widgetVar="PdataViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewPdataTitle}">
+            <h:form id="PdataViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pdataController.selected != null}">
+                        <h:outputText value="#{bundle.ViewPdataLabel_id}"/>
+                        <h:outputText value="#{pdataController.selected.id}" title="#{bundle.ViewPdataTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewPdataLabel_taxNum}"/>
+                        <h:outputText value="#{pdataController.selected.taxNum}" title="#{bundle.ViewPdataTitle_taxNum}"/>
+                        <h:outputText value="#{bundle.ViewPdataLabel_identificationNum}"/>
+                        <h:outputText value="#{pdataController.selected.identificationNum}" title="#{bundle.ViewPdataTitle_identificationNum}"/>
+                        <h:outputText value="#{bundle.ViewPdataLabel_insurranceNum}"/>
+                        <h:outputText value="#{pdataController.selected.insurranceNum}" title="#{bundle.ViewPdataTitle_insurranceNum}"/>
+                        <h:outputText value="#{bundle.ViewPdataLabel_personalNum}"/>
+                        <h:outputText value="#{pdataController.selected.personalNum}" title="#{bundle.ViewPdataTitle_personalNum}"/>
+                        <h:outputText value="#{bundle.ViewPdataLabel_other}"/>
+                        <h:outputText value="#{pdataController.selected.other}" title="#{bundle.ViewPdataTitle_other}"/>
+                        <h:outputText value="#{bundle.ViewPdataLabel_otherType}"/>
+                        <h:outputText value="#{pdataController.selected.otherType}" title="#{bundle.ViewPdataTitle_otherType}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="PdataViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

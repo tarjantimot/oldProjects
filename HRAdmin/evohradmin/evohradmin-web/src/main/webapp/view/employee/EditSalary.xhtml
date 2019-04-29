@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="SalaryEditDlg" widgetVar="SalaryEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditSalaryTitle}">
+            <h:form id="SalaryEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{employeeController.selectedSalary != null}">
+                        <p:outputLabel value="#{bundle.EditSalaryLabel_startDate}" for="startDate" />
+                        <p:calendar id="startDate" pattern="yyyy/MM/dd" value="#{employeeController.selectedSalary.startDate}" title="#{bundle.EditSalaryTitle_startDate}" required="true" requiredMessage="#{bundle.EditSalaryRequiredMessage_startDate}" showOn="button"/>
+                        <p:outputLabel value="Lezáró dátum" for="endDate" />
+                        <p:calendar id="endDate" pattern="yyyy/MM/dd" value="#{employeeController.selectedSalary.endDate}" title="#{bundle.EditSalaryTitle_endDate}"  showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditSalaryLabel_amount}" for="amount" />
+                        <p:inputText id="amount" value="#{employeeController.selectedSalary.value}" title="#{bundle.EditSalaryTitle_amount}" required="true" requiredMessage="#{bundle.EditSalaryRequiredMessage_amount}"/>
+                        <p:outputLabel value="min Fizetés: #{employeeController.selected.job.minSalary}" style="text-align: center"/>
+                        <p:outputLabel value="max Fizetés: #{employeeController.selected.job.maxSalary}" style="text-align: center"/>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{employeeController.updateSalary}" value="#{bundle.Save}" update="display,:EmployeeListForm:AddressTab:salaryList,:growl" oncomplete="handleSubmit(args, 'SalaryEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="SalaryEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AddressEditDlg" widgetVar="AddressEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditAddressTitle}">
+            <h:form id="AddressEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{addressController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditAddressLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{addressController.selected.id}" title="#{bundle.EditAddressTitle_id}" required="true" requiredMessage="#{bundle.EditAddressRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditAddressLabel_country}" for="country" />
+                        <p:inputText id="country" value="#{addressController.selected.country}" title="#{bundle.EditAddressTitle_country}" required="true" requiredMessage="#{bundle.EditAddressRequiredMessage_country}"/>
+                        <p:outputLabel value="#{bundle.EditAddressLabel_postalCode}" for="postalCode" />
+                        <p:inputText id="postalCode" value="#{addressController.selected.postalCode}" title="#{bundle.EditAddressTitle_postalCode}" required="true" requiredMessage="#{bundle.EditAddressRequiredMessage_postalCode}"/>
+                        <p:outputLabel value="#{bundle.EditAddressLabel_city}" for="city" />
+                        <p:inputText id="city" value="#{addressController.selected.city}" title="#{bundle.EditAddressTitle_city}" required="true" requiredMessage="#{bundle.EditAddressRequiredMessage_city}"/>
+                        <p:outputLabel value="#{bundle.EditAddressLabel_street}" for="street" />
+                        <p:inputText id="street" value="#{addressController.selected.street}" title="#{bundle.EditAddressTitle_street}" required="true" requiredMessage="#{bundle.EditAddressRequiredMessage_street}"/>
+                        <p:outputLabel value="#{bundle.EditAddressLabel_streetNumber}" for="streetNumber" />
+                        <p:inputText id="streetNumber" value="#{addressController.selected.streetNumber}" title="#{bundle.EditAddressTitle_streetNumber}" required="true" requiredMessage="#{bundle.EditAddressRequiredMessage_streetNumber}"/>
+                        <p:outputLabel value="#{bundle.EditAddressLabel_floor}" for="floor" />
+                        <p:inputText id="floor" value="#{addressController.selected.floor}" title="#{bundle.EditAddressTitle_floor}" />
+                        <p:outputLabel value="#{bundle.EditAddressLabel_door}" for="door" />
+                        <p:inputText id="door" value="#{addressController.selected.door}" title="#{bundle.EditAddressTitle_door}" />
+                        <p:outputLabel value="#{bundle.EditAddressLabel_employee}" for="employee" />
+                        <p:selectOneMenu id="employee" value="#{addressController.selected.employee}" required="true" requiredMessage="#{bundle.EditAddressRequiredMessage_employee}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{employeeController.itemsAvailableSelectOne}"
+                                           var="employeeItem"
+                                           itemValue="#{employeeItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{addressController.update}" value="#{bundle.Save}" update="display,:AddressListForm:datalist,:growl" oncomplete="handleSubmit(args, 'AddressEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="AddressEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

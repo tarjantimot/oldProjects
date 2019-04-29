@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ContractEditDlg" widgetVar="ContractEditDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.EditContractTitle}">
+            <h:form id="ContractEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{contractController.selected != null}">
+                        <p:outputLabel value="#{bundle.EditContractLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{contractController.selected.id}" title="#{bundle.EditContractTitle_id}" required="true" requiredMessage="#{bundle.EditContractRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.EditContractLabel_creationDate}" for="creationDate" />
+                        <p:calendar id="creationDate" pattern="MM/dd/yyyy" value="#{contractController.selected.creationDate}" title="#{bundle.EditContractTitle_creationDate}" required="true" requiredMessage="#{bundle.EditContractRequiredMessage_creationDate}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditContractLabel_expiryDate}" for="expiryDate" />
+                        <p:calendar id="expiryDate" pattern="MM/dd/yyyy" value="#{contractController.selected.expiryDate}" title="#{bundle.EditContractTitle_expiryDate}" required="true" requiredMessage="#{bundle.EditContractRequiredMessage_expiryDate}" showOn="button"/>
+                        <p:outputLabel value="#{bundle.EditContractLabel_path}" for="path" />
+                        <p:inputText id="path" value="#{contractController.selected.path}" title="#{bundle.EditContractTitle_path}" required="true" requiredMessage="#{bundle.EditContractRequiredMessage_path}"/>
+                        <p:outputLabel value="#{bundle.EditContractLabel_employee}" for="employee" />
+                        <p:selectOneMenu id="employee" value="#{contractController.selected.employee}" required="true" requiredMessage="#{bundle.EditContractRequiredMessage_employee}">
+                            <f:selectItem itemLabel="#{bundle.SelectOneMessage}"/>
+                            <f:selectItems value="#{employeeController.itemsAvailableSelectOne}"
+                                           var="employeeItem"
+                                           itemValue="#{employeeItem}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{contractController.update}" value="#{bundle.Save}" update="display,:ContractListForm:datalist,:growl" oncomplete="handleSubmit(args, 'ContractEditDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="ContractEditDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

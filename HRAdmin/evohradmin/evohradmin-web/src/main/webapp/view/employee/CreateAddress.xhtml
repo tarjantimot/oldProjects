@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AddressCreateDlg" widgetVar="AddressCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateAddressTitle}">
+            <h:form id="AddressCreateForm">
+                <h:panelGroup id="display">
+                  <p:panelGrid columns="2" rendered="#{employeeController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateAddressLabel_country}" for="country" />
+                        <p:inputText id="country" value="#{employeeController.selectedAddress.country}" title="#{bundle.CreateAddressTitle_country}" required="true" requiredMessage="#{bundle.CreateAddressRequiredMessage_country}"/>
+                        <p:outputLabel value="#{bundle.CreateAddressLabel_postalCode}" for="postalCode" />
+                        <p:inputText id="postalCode" value="#{employeeController.selectedAddress.postalCode}" title="#{bundle.CreateAddressTitle_postalCode}" required="true" requiredMessage="#{bundle.CreateAddressRequiredMessage_postalCode}"/>
+                        <p:outputLabel value="#{bundle.CreateAddressLabel_city}" for="city" />
+                        <p:inputText id="city" value="#{employeeController.selectedAddress.city}" title="#{bundle.CreateAddressTitle_city}" required="true" requiredMessage="#{bundle.CreateAddressRequiredMessage_city}"/>
+                        <p:outputLabel value="#{bundle.CreateAddressLabel_street}" for="street" />
+                        <p:inputText id="street" value="#{employeeController.selectedAddress.street}" title="#{bundle.CreateAddressTitle_street}" required="true" requiredMessage="#{bundle.CreateAddressRequiredMessage_street}"/>
+                        <p:outputLabel value="#{bundle.CreateAddressLabel_streetNumber}" for="streetNumber" />
+                        <p:inputText id="streetNumber" value="#{employeeController.selectedAddress.streetNumber}" title="#{bundle.CreateAddressTitle_streetNumber}" required="true" requiredMessage="#{bundle.CreateAddressRequiredMessage_streetNumber}"/>
+                        <p:outputLabel value="#{bundle.CreateAddressLabel_floor}" for="floor" />
+                        <p:inputText id="floor" value="#{employeeController.selectedAddress.floor}" title="#{bundle.CreateAddressTitle_floor}" />
+                        <p:outputLabel value="#{bundle.CreateAddressLabel_door}" for="door" />
+                        <p:inputText id="door" value="#{employeeController.selectedAddress.door}" title="#{bundle.CreateAddressTitle_door}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{employeeController.createAddress()}" value="#{bundle.Save}" update="display,:EmployeeListForm:AddressTab:addressList,:growl" oncomplete="handleSubmit(args,'AddressCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="AddressCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

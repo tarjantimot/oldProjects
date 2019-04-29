@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="HrSchemePU" transaction-type="JTA">
+    <jta-data-source>jdbc/hr</jta-data-source>
+    <class>hu.bh.dzzt.enities.DepartmentEntity</class>
+    <class>hu.bh.dzzt.enities.EmployeeEntity</class>
+    <class>hu.bh.dzzt.enities.JobEntity</class>
+    <class>hu.bh.dzzt.enities.ManagerEntity</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="DerbyHrUserPU" transaction-type="JTA">
+    <jta-data-source>jdbc/HrUser</jta-data-source>
+    <class>hu.bh.dzzt.enities.RoleEntity</class>
+    <class>hu.bh.dzzt.enities.UserEntity</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
+</persistence>

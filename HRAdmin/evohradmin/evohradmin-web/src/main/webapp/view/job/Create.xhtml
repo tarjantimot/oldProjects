@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="JobCreateDlg" widgetVar="JobCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreateJobTitle}">
+            <h:form id="JobCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{jobController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreateJobLabel_jobTitle}" for="jobTitle" />
+                        <p:inputText id="jobTitle" value="#{jobController.selected.jobTitle}" title="#{bundle.CreateJobTitle_jobTitle}" required="true" requiredMessage="#{bundle.CreateJobRequiredMessage_jobTitle}">
+                            
+                        </p:inputText>
+                        <p:outputLabel value="#{bundle.CreateJobLabel_minSalary}" for="minSalary" />
+                        <p:inputText id="minSalary" value="#{jobController.selected.minSalary}" title="#{bundle.CreateJobTitle_minSalary}" required="true" requiredMessage="#{bundle.CreateJobRequiredMessage_minSalary}" >
+                            
+                        </p:inputText>
+                        <p:outputLabel value="#{bundle.CreateJobLabel_maxSalary}" for="maxSalary" />
+                        <p:inputText id="maxSalary" value="#{jobController.selected.maxSalary}" title="#{bundle.CreateJobTitle_maxSalary}" required="true" requiredMessage="#{bundle.CreateJobRequiredMessage_maxSalary}" >
+                        
+                        </p:inputText>
+                        <p:outputLabel value="#{bundle.CreateJobLabel_workerNum}" for="workerNum" />
+                        <p:inputText id="workerNum" value="#{jobController.selected.workerNum}" title="#{bundle.CreateJobTitle_workerNum}" required="true" requiredMessage="#{bundle.CreateJobRequiredMessage_workerNum}">
+                        
+                        </p:inputText>
+                        <p:outputLabel value="#{bundle.CreateJobLabel_location}" for="location" />
+                            <p:inputText id="location" value="#{jobController.selected.location}" title="#{bundle.CreateJobTitle_location}" required="true" requiredMessage="#{bundle.CreateJobRequiredMessage_location}" >
+                            
+                            </p:inputText>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{jobController.create}" value="#{bundle.Save}" update="display,:JobListForm:datalist,:growl" oncomplete="handleSubmit(args,'JobCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="JobCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

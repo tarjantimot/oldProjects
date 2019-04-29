@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="EmployeeViewDlg" widgetVar="EmployeeViewDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.ViewEmployeeTitle}">
+            <h:form id="EmployeeViewForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{employeeController.selected != null}">
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_id}"/>
+                        <h:outputText value="#{employeeController.selected.id}" title="#{bundle.ViewEmployeeTitle_id}"/>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_firstName}"/>
+                        <h:outputText value="#{employeeController.selected.firstName}" title="#{bundle.ViewEmployeeTitle_firstName}"/>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_lastName}"/>
+                        <h:outputText value="#{employeeController.selected.lastName}" title="#{bundle.ViewEmployeeTitle_lastName}"/>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_birthPlace}"/>
+                        <h:outputText value="#{employeeController.selected.birthPlace}" title="#{bundle.ViewEmployeeTitle_birthPlace}"/>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_birthDate}"/>
+                        <h:outputText value="#{employeeController.selected.dateOfBirth}" title="#{bundle.ViewEmployeeTitle_birthDate}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_status}"/>
+                        <h:outputText value="#{employeeController.selected.status}" title="#{bundle.ViewEmployeeTitle_status}"/>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_statusLastModified}"/>
+                        <h:outputText value="#{employeeController.selected.statusModified}" title="#{bundle.ViewEmployeeTitle_statusLastModified}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" />
+                        </h:outputText>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_jobId}"/>
+                        <h:outputText value="#{employeeController.selected.job.id}" title="#{bundle.ViewEmployeeTitle_jobId}"/>
+                        <h:outputText value="#{bundle.ViewEmployeeLabel_pdata}"/>
+                        <h:outputText value="#{employeeController.selected.pdata}" title="#{bundle.ViewEmployeeTitle_pdata}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{bundle.Close}" onclick="EmployeeViewDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

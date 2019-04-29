@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PdataCreateDlg" widgetVar="PdataCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{bundle.CreatePdataTitle}">
+            <h:form id="PdataCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{pdataController.selected != null}">
+                        <p:outputLabel value="#{bundle.CreatePdataLabel_id}" for="id" />
+                        <p:inputText id="id" value="#{pdataController.selected.id}" title="#{bundle.CreatePdataTitle_id}" required="true" requiredMessage="#{bundle.CreatePdataRequiredMessage_id}"/>
+                        <p:outputLabel value="#{bundle.CreatePdataLabel_taxNum}" for="taxNum" />
+                        <p:inputText id="taxNum" value="#{pdataController.selected.taxNum}" title="#{bundle.CreatePdataTitle_taxNum}" required="true" requiredMessage="#{bundle.CreatePdataRequiredMessage_taxNum}"/>
+                        <p:outputLabel value="#{bundle.CreatePdataLabel_identificationNum}" for="identificationNum" />
+                        <p:inputText id="identificationNum" value="#{pdataController.selected.identificationNum}" title="#{bundle.CreatePdataTitle_identificationNum}" required="true" requiredMessage="#{bundle.CreatePdataRequiredMessage_identificationNum}"/>
+                        <p:outputLabel value="#{bundle.CreatePdataLabel_insurranceNum}" for="insurranceNum" />
+                        <p:inputText id="insurranceNum" value="#{pdataController.selected.insurranceNum}" title="#{bundle.CreatePdataTitle_insurranceNum}" required="true" requiredMessage="#{bundle.CreatePdataRequiredMessage_insurranceNum}"/>
+                        <p:outputLabel value="#{bundle.CreatePdataLabel_personalNum}" for="personalNum" />
+                        <p:inputText id="personalNum" value="#{pdataController.selected.personalNum}" title="#{bundle.CreatePdataTitle_personalNum}" required="true" requiredMessage="#{bundle.CreatePdataRequiredMessage_personalNum}"/>
+                        <p:outputLabel value="#{bundle.CreatePdataLabel_other}" for="other" />
+                        <p:inputText id="other" value="#{pdataController.selected.other}" title="#{bundle.CreatePdataTitle_other}" />
+                        <p:outputLabel value="#{bundle.CreatePdataLabel_otherType}" for="otherType" />
+                        <p:inputText id="otherType" value="#{pdataController.selected.otherType}" title="#{bundle.CreatePdataTitle_otherType}" />
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pdataController.create}" value="#{bundle.Save}" update="display,:PdataListForm:datalist,:growl" oncomplete="handleSubmit(args,'PdataCreateDialog');"/>
+                    <p:commandButton value="#{bundle.Cancel}" onclick="PdataCreateDialog.hide()"/>
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

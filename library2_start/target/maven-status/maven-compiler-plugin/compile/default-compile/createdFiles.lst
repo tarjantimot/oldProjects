@@ -1,0 +1,8 @@
+hu\evo\training\library\model\Loanings.class
+hu\evo\training\library\TestDS.class
+hu\evo\training\library\model\Person.class
+hu\evo\training\library\db\DataManager.class
+hu\evo\training\library\model\Book.class
+hu\evo\training\library\db\DBUtil.class
+hu\evo\training\library\model\BookInstance.class
+hu\evo\training\library\model\DbTable.class

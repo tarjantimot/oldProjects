@@ -1,0 +1,10 @@
+evohradmin/ear/lib/
+evohradmin/ear/target/
+evohradmin/ear/nb-configuration.xml
+evohradmin/ejb/lib/
+evohradmin/ejb/target/
+evohradmin/ejb/nb-configuration.xml
+evohradmin/web/lib/
+evohradmin/web/target/
+evohradmin/web/nb-configuration.xml
+evohradmin/nb-configuration.xml

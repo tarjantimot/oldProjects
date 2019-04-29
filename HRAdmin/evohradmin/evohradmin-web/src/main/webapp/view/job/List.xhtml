@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListJobTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="JobListForm" enctype="multipart/form-data">
+                <p:panel header="#{bundle.ListJobTitle}" style="width: 90%; margin: 0px auto;">
+                    <p:dataTable id="datalist" value="#{jobController.items}" var="item"
+                                 selectionMode="single" selection="#{jobController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}" 
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 widgetVar="jobTable"
+                                 emptyMessage="Nem található a kritériumoknak megfelelő állás."                                 
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton editButton deleteButton descriptionButton"/>
+                        <p:ajax event="rowUnselect" update="createButton editButton deleteButton descriptionButton"/>
+
+                        <f:facet name="footer">
+                            <h:outputText value=" Keresés:   " style="font-weight: bold;" /> 
+                            <p:inputText id="globalFilter" onkeyup="PF('jobTable').filter()" style="width:25%;" placeholder="Kereséshez írjon valamit.." />
+                        </f:facet>
+                        <p:column sortBy="#{item.jobTitle}" filterBy="#{item.jobTitle}" style="width: 30%;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJobTitle_jobTitle}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.jobTitle}"/>
+                        </p:column>
+                        <p:column style="width: 25%;">
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJobTitle_jobDescription}" />
+                            </f:facet>
+                            <h:outputText value="#{jobController.getJobDescriptionSubstr(item.jobDescription)}" />
+                        </p:column>
+                        <p:column sortBy="#{item.path}" filterBy="#{item.path}" filterMatchMode="contains" >
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJobTitle_path}"/>
+                            </f:facet>
+<!--                            <h:outputText value="#{item.path}"></h:outputText>-->
+                                <a href="#{item.path}">Dokumentum URL</a>
+                            <!--<p:fileDownload value="#{(item.path == null) ? item.path : "" }"></p:fileDownload>-->
+                        </p:column>
+                        <p:column sortBy="#{item.minSalary}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJobTitle_minSalary}" />
+                            </f:facet>
+                            <h:outputText value="#{item.minSalary}" />
+                        </p:column>
+                        <p:column sortBy="#{item.maxSalary}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJobTitle_maxSalary}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.maxSalary}"/>
+                        </p:column>
+                        <p:column sortBy="#{item.workerNum}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJobTitle_workerNum}">
+                                </h:outputText>
+                            </f:facet>
+                            <h:outputText value="#{item.workerNum}">
+                            </h:outputText>
+                        </p:column>
+                        <p:column sortBy="#{item.location}" filterBy="#{item.location}" style="" >
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListJobTitle_location}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.location}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus" value="#{bundle.Create}" actionListener="#{jobController.prepareCreate}" update=":JobCreateForm" oncomplete="PF('JobCreateDialog').show()"/>
+                        </f:facet>
+                        <p:separator>      
+                        </p:separator>
+                        <f:facet name="footer">
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":JobEditForm" oncomplete="PF('JobEditDialog').show()" disabled="#{empty jobController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}"  actionListener="#{jobController.destroy}" update=":growl,datalist" disabled="#{empty jobController.selected}">
+                                <p:confirm header="Confirmation" message="Biztosan törölni szeretné?" icon="pi pi-exclamation-triangle" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                            </p:confirmDialog>
+                            <p:commandButton id="descriptionButton" icon="ui-icon-document" action="#{jobDescriptionUploadController.descriptionUploadPage}" actionListener="#{jobDescriptionUploadController.attrListener}" value="Munkaköri leírás"  disabled="#{empty jobController.selected}" >
+                                <f:attribute name="job_id" value="#{jobController.selected.id.toString()}" />
+                            </p:commandButton>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>

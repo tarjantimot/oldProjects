@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+
+
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListEmployeeTitle}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="EmployeeListForm" prependId="false">
+                <p:panel header="#{bundle.ListEmployeeTitle}">
+                    <p:dataTable id="datalist" value="#{employeeController.items}" var="item"
+                                 selectionMode="single" selection="#{employeeController.selected}"
+                                 paginator="true"
+                                 rowKey="#{item.id}"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 style="text-align: center"
+                                 >
+
+                        <p:ajax event="rowSelect"   update="createButton editButton deleteButton AddressTab:addressList AddressTab:salaryList AddressTab:contactList AddressTab:contractList"/>
+                        <p:ajax event="rowUnselect" update="createButton editButton deleteButton AddressTab:addressList AddressTab:salaryList AddressTab:contactList AddressTab:contractList"/>
+
+                        <p:column  filterBy="#{item.lastName}">
+                            <f:facet name="header">
+                                <h:outputText value="Vezetéknév"/>
+                            </f:facet>
+                            <h:outputText value="#{item.lastName}"/>
+                        </p:column>
+                        
+                        <p:column  filterBy="#{item.firstName}">
+                            <f:facet name="header">
+                                <h:outputText value="Keresztnév"/>
+                            </f:facet>
+                            <h:outputText value="#{item.firstName}"/>
+                        </p:column>
+                        
+                        <p:column  filterBy="#{item.birthPlace}">
+                            <f:facet name="header">
+                                <h:outputText value="Születési hely"/>
+                            </f:facet>
+                            <h:outputText value="#{item.birthPlace}"/>
+                        </p:column>
+                        
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="Születési dátum"/>
+                            </f:facet>
+                            <h:outputText value="#{item.dateOfBirth}">
+                                <f:convertDateTime locale="hu-HU"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column  filterBy="#{item.status}">
+                            <f:facet name="header">
+                                <h:outputText value="Státusz"/>
+                            </f:facet>
+                            <h:outputText value="#{item.status}"/>
+                        </p:column>
+                        
+                        <p:column sortBy="#{item.statusModified}">
+                            <f:facet name="header">
+                                <h:outputText value="Státusz utoljára módositva"/>
+                            </f:facet>
+                            <h:outputText value="#{item.statusModified}">
+                                <f:convertDateTime locale="hu-HU" />
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column  filterBy="#{item.job.jobTitle}">
+                            <f:facet name="header">
+                                <h:outputText value="Munkakör"/>
+                            </f:facet>
+                            <h:outputText value="#{item.job.jobTitle}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="SZIG szám"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pdata.identificationNum}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Biztositási szám"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pdata.insuranceNum}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Személyi szám"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pdata.personalNum}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Adószám"/>
+                            </f:facet>
+                            <h:outputText value="#{item.pdata.taxNum}"/>
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{employeeController.prepareCreate()}" update=":EmployeeCreateForm" oncomplete="PF('EmployeeCreateDialog').show()"/>
+                            <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":EmployeeEditForm" oncomplete="PF('EmployeeEditDialog').show()" disabled="#{empty employeeController.selected}"/>
+                            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{employeeController.destroy()}" update=":growl,datalist" disabled="#{empty employeeController.selected}">
+                                <p:confirm header="Confirmation" message="Biztosan törölni szeretné?" icon="pi pi-exclamation-triangle" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                            </p:confirmDialog>
+                        </f:facet>
+                    </p:dataTable>
+                    <p:tabView id="AddressTab" cache="false">
+                        <p:tab title="Cimek">
+
+                        
+                            <p:dataTable id="addressList" value="#{employeeController.selected.addressList}" var="addressItem"
+                                         selectionMode="single" selection="#{employeeController.selectedAddress}"
+                                         rowKey="#{addressItem.id}" style="text-align: center"
+                                         >
+
+                                <p:ajax event="rowSelect"   update="addressCreateButton addressEditButton addressDeleteButton"/>
+                                <p:ajax event="rowUnselect" update="addressCreateButton addressEditButton addressDeleteButton"/>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Ország"/>
+                                    </f:facet>
+                                    <h:outputText value="#{addressItem.country}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="IRSZ"/>
+                                    </f:facet>
+                                    <h:outputText value="#{addressItem.postalCode}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Város"/>
+                                    </f:facet>
+                                    <h:outputText value="#{addressItem.city}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Utca"/>
+                                    </f:facet>
+                                    <h:outputText value="#{addressItem.street}"/>
+                                </p:column>
+
+                                <p:column style="width: 7.5%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Házszám"/>
+                                    </f:facet>
+                                    <h:outputText value="#{addressItem.streetNumber}"/>
+                                </p:column>
+
+                                <p:column style="width: 7.5%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Emelet"/>
+                                    </f:facet>
+                                    <h:outputText value="#{addressItem.floor}"/>
+                                </p:column>
+
+                                <p:column style="width: 7.5%">
+                                    <f:facet name="header">
+                                        <h:outputText value="Ajtó"/>
+                                    </f:facet>
+                                    <h:outputText value="#{addressItem.door}"/>
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <p:commandButton id="addressCreateButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{employeeController.prepareCreateAddress()}" update=":AddressCreateForm" disabled="#{empty employeeController.selected}" oncomplete="PF('AddressCreateDialog').show()"/>
+                                    <p:commandButton id="addressEditButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":AddressEditForm" oncomplete="PF('AddressEditDialog').show()" disabled="#{empty employeeController.selectedAddress}"/>
+                                    <p:commandButton id="addressDeleteButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{employeeController.deleteAddress}" update=":growl,:AddressTab:addressList" disabled="#{empty employeeController.selectedAddress}">
+                                        <p:confirm header="Confirmation" message="Biztosan törölni szeretné?" icon="pi pi-exclamation-triangle" />
+                                    </p:commandButton>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                        <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                                    </p:confirmDialog>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:tab>
+                        
+                        
+                        
+                        
+                        <p:tab title="Fizetés" id="salaryTab">
+                            <p:dataTable id="salaryList" value="#{employeeController.selected.salaryList}" var="salaryItem"
+                                         selectionMode="single" selection="#{employeeController.selectedSalary}"
+                                         rowKey="#{salaryItem.id}" style="text-align: center"
+                                         >
+
+                                <p:ajax event="rowSelect"   update="createButtonSalary editButtonSalary deleteButtonSalary"/>
+                                <p:ajax event="rowUnselect" update="createButtonSalary editButtonSalary deleteButtonSalary"/>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Kezdő dátum"/>
+                                    </f:facet>
+                                    <h:outputText value="#{salaryItem.startDate}">
+                                        <f:convertDateTime locale="hu-HU" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Végző dátum"/>
+                                    </f:facet>
+                                    <h:outputText value="#{salaryItem.endDate}">
+                                        <f:convertDateTime locale="hu-HU" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Mennyiség"/>
+                                    </f:facet>
+                                    <h:outputText value="#{salaryItem.value}"/>
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <p:commandButton id="createButtonSalary" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{employeeController.prepareCreateSalary}" update=":SalaryCreateForm" disabled="#{empty employeeController.selected}" oncomplete="PF('SalaryCreateDialog').show()"/>
+                                    <p:commandButton id="editButtonSalary"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":SalaryEditForm" oncomplete="PF('SalaryEditDialog').show()" disabled="#{empty employeeController.selectedSalary}"/>
+                                    <p:commandButton id="deleteButtonSalary" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{employeeController.deleteSalary}" update=":growl,:AddressTab:salaryList" disabled="#{empty employeeController.selectedSalary}">
+                                        <p:confirm header="Confirmation" message="Biztosan törölni szeretné?" icon="pi pi-exclamation-triangle" />
+                                    </p:commandButton>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                        <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                                    </p:confirmDialog>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:tab>
+                            
+
+                        <p:tab title="Elérhetőségek" id="contactTab">
+                            
+                            <p:dataTable id="contactList" value="#{employeeController.selected.contactList}" var="contactItem"
+                                         selectionMode="single" selection="#{employeeController.selectedContact}"
+                                         rowKey="#{contactItem.id}"
+                                         >
+
+                               <p:ajax event="rowSelect"   update="createContactButton editContactButton deleteContactButton"/>
+                               <p:ajax event="rowUnselect" update="createContactButton editContactButton deleteContactButton"/>
+
+                               <p:column style="width: 20%">
+                                   <f:facet name="header">
+                                       <h:outputText value="Elérhetőség Tipusa"/>
+                                   </f:facet>
+                                   <h:outputText value="#{contactItem.contactType}"/>
+                               </p:column>
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Elérhetőség"/>
+                                   </f:facet>
+                                   <h:outputText value="#{contactItem.contactValue}"/>
+                               </p:column>
+
+                               <f:facet name="footer">
+                                   <p:commandButton id="createContactButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{employeeController.prepareCreateContact}" update=":ContactCreateForm" disabled="#{empty employeeController.selected}" oncomplete="PF('ContactCreateDialog').show()"/>
+                                   <p:commandButton id="editContactButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ContactEditForm" oncomplete="PF('ContactEditDialog').show()" disabled="#{empty employeeController.selectedContact}"/>
+                                   <p:commandButton id="deleteContactButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{employeeController.deleteContact}" update=":growl,contactList" disabled="#{empty employeeController.selectedContact}">
+                                        <p:confirm header="Confirmation" message="Biztosan törölni szeretné?" icon="pi pi-exclamation-triangle" />
+                                   </p:commandButton>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                        <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                                    </p:confirmDialog>
+                               </f:facet>
+                            </p:dataTable>
+                        </p:tab>
+                        
+                        <p:tab title="Szerződések" id="contractTab">
+                            <p:dataTable id="contractList" value="#{employeeController.selected.contractList}" var="contractItem"
+                                         selectionMode="single" selection="#{employeeController.selectedContract}"
+                                         rowKey="#{contractItem.id}" style="text-align: center"
+                                         >
+
+                               <p:ajax event="rowSelect"   update="createContractButton editContractButton deleteContractButton fileUpload"/>
+                               <p:ajax event="rowUnselect" update="createContractButton editContractButton deleteContractButton fileUpload"/>
+
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Létrehozás Dátuma"/>
+                                   </f:facet>
+                                   <h:outputText value="#{contractItem.creationDate}">
+                                       <f:convertDateTime locale="hu-HU" />
+                                   </h:outputText>
+                               </p:column>
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Lejárat Dátuma"/>
+                                   </f:facet>
+                                   <h:outputText value="#{contractItem.expireDate}">
+                                       <f:convertDateTime locale="hu-HU" />
+                                   </h:outputText>
+                               </p:column>
+                               <p:column>
+                                   <f:facet name="header">
+                                       <h:outputText value="Letöltés"/>
+                                   </f:facet>
+                                   <a href="#{contractItem.path}"> "Dokumentum letöltése"</a>
+                               </p:column>
+
+                               <f:facet name="footer">
+                                   <p:commandButton id="createContractButton" icon="ui-icon-plus"   value="#{bundle.Create}" actionListener="#{employeeController.prepareCreateContract}" update=":ContractCreateForm" disabled="#{empty employeeController.selected}" oncomplete="PF('ContractCreateDialog').show()"/>
+                                   <p:commandButton id="editContractButton"   icon="ui-icon-pencil" value="#{bundle.Edit}" update=":ContractEditForm" oncomplete="PF('ContractEditDialog').show()" disabled="#{empty employeeController.selectedContract}"/>
+                                   <p:commandButton id="deleteContractButton" icon="ui-icon-trash"  value="#{bundle.Delete}" actionListener="#{employeeController.deleteContract}" update=":growl,:EmployeeListForm:AddressTab:contractList" disabled="#{empty employeeController.selectedContract}">
+                                        <p:confirm header="Confirmation" message="Biztosan törölni szeretné?" icon="pi pi-exclamation-triangle" />
+                                    </p:commandButton>
+                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                        <p:commandButton value="Igen" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                                        <p:commandButton value="Nem" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+                                    </p:confirmDialog>
+                                <!--<h:form id="contractUploadForm" style="text-align:center; margin: 0 auto;">-->
+                                     <p>
+                                         <p:fileUpload fileUploadListener="#{contractUploadController.handleFileUpload}" mode="advanced" dragDropSupport="false" id="fileUpload"
+                                                       update="messages" sizeLimit="700000" fileLimit="1" cancelLabel="Mégse" uploadLabel="Feltölt" disabled="#{empty employeeController.selectedContract}" >
+                                             <f:attribute name="contractDto" value="#{employeeController.selectedContract.id.toString()}" />
+                                         </p:fileUpload>
+                                         <p:growl id="messages" showDetail="true" /> 
+                                     </p>
+                                 <!--</h:form>-->
+                               </f:facet>
+                               
+                           </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </p:panel>
+            </h:form>
+
+            <ui:include src="Create.xhtml"/>
+            <ui:include src="CreateAddress.xhtml"/>
+            <ui:include src="CreateContact.xhtml"/>
+            <ui:include src="CreateContract.xhtml"/>
+            <ui:include src="CreateSalary.xhtml"/>
+            <ui:include src="Edit.xhtml"/>
+            <ui:include src="EditAddress.xhtml"/>
+            <ui:include src="EditContact.xhtml"/>
+            <ui:include src="EditContract.xhtml"/>
+            <ui:include src="EditSalary.xhtml"/>
+            <ui:include src="View.xhtml"/>
+        </ui:define>
+    </ui:composition>
+
+</html>
